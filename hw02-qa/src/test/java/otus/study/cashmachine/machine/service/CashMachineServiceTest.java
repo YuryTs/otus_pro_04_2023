@@ -65,11 +65,27 @@ class CashMachineServiceTest {
 
     @Test
     void putMoney() {
+        when(cardsDao.getCardByNumber("1111"))
+                .thenReturn(new Card(1, "1111", 1L, TestUtil.getHash("0000")));
+
+        MoneyBox moneyBox = new MoneyBox(1,1,1,1);
+        cashMachine.setMoneyBox(moneyBox);
+
+        BigDecimal bigDecimal = cashMachineService.checkBalance(cashMachine,"1111", "0000");
+
+        BigDecimal bigDecimal1 = cashMachineService.putMoney(cashMachine, "1111", "0000", List.of(1,1,1,1));
+        assertEquals(bigDecimal, bigDecimal1);
+
+
     }
 
     @Test
     void checkBalance() {
-
+        when(cardsDao.getCardByNumber("1111"))
+                .thenReturn(new Card(1, "1111", 1L, TestUtil.getHash("0000")));
+        when(accountService.checkBalance(1L)).thenReturn(BigDecimal.TEN);
+        BigDecimal bigDecimal = cashMachineService.checkBalance(cashMachine, "1111", "0000");
+        assertEquals(BigDecimal.TEN, bigDecimal);
     }
 
     @Test

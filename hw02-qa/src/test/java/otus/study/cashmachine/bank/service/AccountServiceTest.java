@@ -44,17 +44,29 @@ public class AccountServiceTest {
 
     @Test
     void addSum() {
+        when(accountDao.getAccount(0L)).thenReturn(expectedAccount);
+        accountServiceImpl.putMoney(0L, BigDecimal.TEN);
+        assertEquals(expectedAccount.getAmount(), accountServiceImpl.getAccount(0L).getAmount());
     }
 
     @Test
     void getSum() {
+        when(accountDao.getAccount(0L)).thenReturn(expectedAccount);
+        BigDecimal bigDecimal = accountServiceImpl.getMoney(0L,BigDecimal.TEN);
+        assertEquals(expectedAccount.getAmount(), bigDecimal);
     }
 
     @Test
     void getAccount() {
+        when(accountDao.getAccount(0L)).thenReturn(expectedAccount);
+        Account account = accountServiceImpl.getAccount(0L);
+        assertEquals(expectedAccount, account);
     }
 
     @Test
     void checkBalance() {
+        when(accountDao.getAccount(0L)).thenReturn(expectedAccount);
+        BigDecimal bigDecimal = accountServiceImpl.checkBalance(0L);
+        assertEquals(expectedAccount.getAmount(), bigDecimal);
     }
 }
